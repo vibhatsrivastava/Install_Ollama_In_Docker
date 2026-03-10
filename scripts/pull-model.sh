@@ -1,12 +1,23 @@
 #!/usr/bin/env bash
 # pull-model.sh — pull an Ollama model into the running container.
 # Usage: bash scripts/pull-model.sh
-# The script must be run from the repository root (where docker-compose.yml lives).
+# Can be run from any directory; the compose file is located relative to this script.
 
 set -euo pipefail
 
+# ── Resolve paths relative to this script ────────────────────────────────────
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)" || { echo "ERROR: Cannot access repository root directory."; exit 1; }
+COMPOSE_FILE="$REPO_ROOT/docker-compose.yml"
+
+if [[ ! -f "$COMPOSE_FILE" ]]; then
+  echo "ERROR: Cannot find docker-compose.yml at '$COMPOSE_FILE'."
+  echo "       Ensure the repository structure is intact."
+  exit 1
+fi
+
 # ── Load .env if it exists ────────────────────────────────────────────────────
-ENV_FILE="$(dirname "$0")/../.env"
+ENV_FILE="$REPO_ROOT/.env"
 if [[ -f "$ENV_FILE" ]]; then
   # shellcheck disable=SC1090
   source "$ENV_FILE"
@@ -39,7 +50,7 @@ MODEL_NAMES=(
 )
 
 # ── Check the container is running ───────────────────────────────────────────
-if ! docker compose ps --services --filter status=running 2>/dev/null | grep -q "^ollama$"; then
+if ! docker compose -f "$COMPOSE_FILE" --project-directory "$REPO_ROOT" ps --services --filter status=running 2>/dev/null | grep -q "^ollama$"; then
   echo "ERROR: The 'ollama' container is not running."
   echo "       Start it first with:  docker compose up -d"
   exit 1
@@ -93,7 +104,7 @@ echo "Pulling model: ${SELECTED_MODEL}"
 echo "This may take several minutes depending on model size and your connection."
 echo ""
 
-docker compose exec ollama ollama pull "${SELECTED_MODEL}"
+docker compose -f "$COMPOSE_FILE" --project-directory "$REPO_ROOT" exec ollama ollama pull "${SELECTED_MODEL}"
 
 echo ""
 echo "Done! Model '${SELECTED_MODEL}' is ready."
