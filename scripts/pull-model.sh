@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # pull-model.sh — pull an Ollama model into the running container.
-# Usage: bash scripts/pull-model.sh
+# Usage: bash /path/to/repo/scripts/pull-model.sh
 # Can be run from any directory; the compose file is located relative to this script.
 
 set -euo pipefail
