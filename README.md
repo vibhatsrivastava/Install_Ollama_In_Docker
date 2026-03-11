@@ -47,10 +47,10 @@ The container will:
 ### 4. Verify the API is reachable from the host
 
 ```bash
-curl http://localhost:11434
+# Optional: export your configured port so the command picks it up automatically
+source .env
+curl http://localhost:${OLLAMA_PORT:-11434}
 ```
-
-> **Note:** Replace `11434` with your configured `OLLAMA_PORT` if you changed it in `.env`.
 
 Expected response: `Ollama is running`
 
