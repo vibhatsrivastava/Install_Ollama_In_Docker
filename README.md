@@ -124,10 +124,10 @@ docker volume inspect ollama_data
 
 ## Connecting to the API
 
-The Ollama REST API is available at `http://<your-server-ip>:11434` from any machine that can reach the host.  
+The Ollama REST API is available at `http://<your-server-ip>:<port>` from any machine that can reach the host (default port is `11434`, or the value you configured in `OLLAMA_PORT`).  
 Full API reference: https://github.com/ollama/ollama/blob/main/docs/api.md
 
-Quick test — generate a response:
+Quick test — generate a response (replace `11434` with your configured `OLLAMA_PORT` if different):
 
 ```bash
 curl http://localhost:11434/api/generate \
