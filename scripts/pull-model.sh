@@ -26,27 +26,18 @@ fi
 DEFAULT_MODEL="${MODEL:-llama3.2}"
 
 # ── Curated popular models ────────────────────────────────────────────────────
-POPULAR_MODELS=(
-  "llama3.2       – Meta Llama 3.2 (3B, general purpose, fast)"
-  "llama3.1       – Meta Llama 3.1 (8B, stronger reasoning)"
-  "mistral        – Mistral 7B (general purpose, very capable)"
-  "codellama      – Code Llama 7B (code generation & completion)"
-  "gemma3         – Google Gemma 3 (4B, efficient, multilingual)"
-  "phi4           – Microsoft Phi-4 (14B, advanced reasoning)"
-  "deepseek-r1    – DeepSeek R1 (8B, reasoning-focused)"
-  "qwen2.5-coder  – Qwen 2.5 Coder (7B, coding specialist)"
-  "gpt-oss:20b    – GPT OSS 20B (20B, OpenAI open-source)"
-)
-MODEL_NAMES=(
-  "llama3.2"
-  "llama3.1"
-  "mistral"
-  "codellama"
-  "gemma3"
-  "phi4"
-  "deepseek-r1"
-  "qwen2.5-coder"
-  "gpt-oss:20b"
+# Each entry is "model-name|Human-readable description".
+# The model name (before '|') is used when pulling; the description is displayed.
+MODELS=(
+  "llama3.2|Meta Llama 3.2 (3B, general purpose, fast)"
+  "llama3.1|Meta Llama 3.1 (8B, stronger reasoning)"
+  "mistral|Mistral 7B (general purpose, very capable)"
+  "codellama|Code Llama 7B (code generation & completion)"
+  "gemma3|Google Gemma 3 (4B, efficient, multilingual)"
+  "phi4|Microsoft Phi-4 (14B, advanced reasoning)"
+  "deepseek-r1|DeepSeek R1 (8B, reasoning-focused)"
+  "qwen2.5-coder|Qwen 2.5 Coder (7B, coding specialist)"
+  "gpt-oss:20b|GPT OSS 20B (20B, OpenAI open-source)"
 )
 
 # ── Check the container is running ───────────────────────────────────────────
@@ -71,8 +62,10 @@ echo "════════════════════════�
 echo ""
 echo "Popular models:"
 echo ""
-for i in "${!POPULAR_MODELS[@]}"; do
-  printf "  [%d] %s\n" "$((i + 1))" "${POPULAR_MODELS[$i]}"
+for i in "${!MODELS[@]}"; do
+  name="${MODELS[$i]%%|*}"
+  desc="${MODELS[$i]##*|}"
+  printf "  [%d] %-15s – %s\n" "$((i + 1))" "$name" "$desc"
 done
 echo ""
 echo "  [c] Enter a custom model name"
@@ -80,7 +73,7 @@ echo "  [q] Quit"
 echo ""
 echo "Default (from .env / MODEL variable): ${DEFAULT_MODEL}"
 echo ""
-read -rp "Your choice [1-${#POPULAR_MODELS[@]} / c / q, default=c]: " CHOICE
+read -rp "Your choice [1-${#MODELS[@]} / c / q, default=c]: " CHOICE
 
 case "${CHOICE}" in
   [qQ])
@@ -97,8 +90,8 @@ case "${CHOICE}" in
     SELECTED_MODEL="${CUSTOM}"
     ;;
   *)
-    if [[ "${CHOICE}" =~ ^[0-9]+$ ]] && (( CHOICE >= 1 && CHOICE <= ${#POPULAR_MODELS[@]} )); then
-      SELECTED_MODEL="${MODEL_NAMES[$((CHOICE - 1))]}"
+    if [[ "${CHOICE}" =~ ^[0-9]+$ ]] && (( CHOICE >= 1 && CHOICE <= ${#MODELS[@]} )); then
+      SELECTED_MODEL="${MODELS[$((CHOICE - 1))]%%|*}"
     else
       echo "ERROR: Invalid choice '${CHOICE}'."
       exit 1
