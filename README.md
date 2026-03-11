@@ -46,6 +46,8 @@ The container will:
 
 ### 4. Verify the API is reachable from the host
 
+> **Note:** The examples below use the default port `11434`. If you changed `OLLAMA_PORT` in your `.env` file, replace `11434` with your configured value.
+
 ```bash
 curl http://localhost:11434
 ```
@@ -124,10 +126,10 @@ docker volume inspect ollama_data
 
 ## Connecting to the API
 
-The Ollama REST API is available at `http://<your-server-ip>:<port>` from any machine that can reach the host (default port is `11434`, or the value you configured in `OLLAMA_PORT`).  
+The Ollama REST API is available at `http://<your-server-ip>:<OLLAMA_PORT>` from any machine that can reach the host (default port: `11434`).  
 Full API reference: https://github.com/ollama/ollama/blob/main/docs/api.md
 
-Quick test — generate a response (replace `11434` with your configured `OLLAMA_PORT` if different):
+Quick test — generate a response (replace `11434` with your `OLLAMA_PORT` if you changed it):
 
 ```bash
 curl http://localhost:11434/api/generate \
