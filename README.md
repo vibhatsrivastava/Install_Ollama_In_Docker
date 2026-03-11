@@ -50,6 +50,8 @@ The container will:
 curl http://localhost:11434
 ```
 
+> **Note:** Replace `11434` with your configured `OLLAMA_PORT` if you changed it in `.env`.
+
 Expected response: `Ollama is running`
 
 ---
