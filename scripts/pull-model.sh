@@ -50,7 +50,13 @@ MODEL_NAMES=(
 )
 
 # ── Check the container is running ───────────────────────────────────────────
-if ! docker compose -f "$COMPOSE_FILE" --project-directory "$REPO_ROOT" ps --services --filter status=running 2>/dev/null | grep -q "^ollama$"; then
+if ! services=$(docker compose -f "$COMPOSE_FILE" --project-directory "$REPO_ROOT" ps --services --filter status=running); then
+  echo "ERROR: Failed to query Docker Compose services."
+  echo "       Ensure Docker is running and the compose file at '$COMPOSE_FILE' is valid."
+  exit 1
+fi
+
+if ! grep -q "^ollama$" <<< "$services"; then
   echo "ERROR: The 'ollama' container is not running."
   echo "       Start it first with:  docker compose up -d"
   exit 1
