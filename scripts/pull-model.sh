@@ -58,7 +58,8 @@ fi
 
 if ! grep -q "^ollama$" <<< "$services"; then
   echo "ERROR: The 'ollama' container is not running."
-  echo "       Start it first with:  docker compose up -d"
+  echo "       Start it with the following command:"
+  echo "         docker compose -f \"$COMPOSE_FILE\" --project-directory \"$REPO_ROOT\" up -d"
   exit 1
 fi
 
