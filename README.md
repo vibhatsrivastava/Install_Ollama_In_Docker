@@ -30,6 +30,7 @@ Open `.env` and adjust the values if needed:
 
 | Variable | Default | Description |
 |---|---|---|
+| `OLLAMA_IMAGE` | `ollama/ollama:latest` | Ollama Docker image and tag to use |
 | `OLLAMA_PORT` | `11434` | Host port the Ollama API is reachable on |
 | `MODEL` | `llama3.2` | Default model used by the pull script |
 
