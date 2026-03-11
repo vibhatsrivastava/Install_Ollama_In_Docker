@@ -49,7 +49,9 @@ The container will:
 > **Note:** The examples below use the default port `11434`. If you changed `OLLAMA_PORT` in your `.env` file, replace `11434` with your configured value.
 
 ```bash
-curl http://localhost:11434
+# Optional: export your configured port so the command picks it up automatically
+source .env
+curl http://localhost:${OLLAMA_PORT:-11434}
 ```
 
 Expected response: `Ollama is running`
