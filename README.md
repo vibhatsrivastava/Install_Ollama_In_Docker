@@ -32,7 +32,7 @@ Open `.env` and adjust the values if needed:
 |---|---|---|
 | `OLLAMA_IMAGE` | `ollama/ollama:latest` | Ollama Docker image and tag to use |
 | `OLLAMA_PORT` | `11434` | Host port the Ollama API is reachable on |
-| `MODEL` | `llama3.2` | Default model used by the pull script |
+| `MODEL` | `gpt-oss:20b` | Default model used by the pull script |
 
 ### 3. Start the Ollama container (detached)
 
@@ -136,7 +136,7 @@ Quick test — generate a response (replace `11434` with your `OLLAMA_PORT` if y
 
 ```bash
 curl http://localhost:11434/api/generate \
-  -d '{"model":"llama3.2","prompt":"Say hello in one sentence.","stream":false}'
+  -d '{"model":"gpt-oss:20b","prompt":"Say hello in one sentence.","stream":false}'
 ```
 
 ---
@@ -185,7 +185,7 @@ Update the variable reference table accordingly:
 |---|---|---|
 | `OLLAMA_IMAGE` | `ollama/ollama:latest` | Ollama Docker image and tag to use |
 | `OLLAMA_PORT` | `11434` | Host port the Ollama API is reachable on |
-| `MODEL` | `llama3.2` | Default model used by the pull script |
+| `MODEL` | `gpt-oss:20b` | Default model used by the pull script |
 | `OLLAMA_API_KEY` | *(unset)* | Secret key required to authenticate API requests |
 
 ### 3. Pass the API key to the container
@@ -211,7 +211,7 @@ Once the API key is set, every HTTP request to the Ollama API must include the k
 ```bash
 curl http://localhost:11434/api/generate \
   -H "Authorization: Bearer your-generated-key-here" \
-  -d '{"model":"llama3.2","prompt":"Say hello in one sentence.","stream":false}'
+  -d '{"model":"gpt-oss:20b","prompt":"Say hello in one sentence.","stream":false}'
 ```
 
 Requests without a valid key will receive a `401 Unauthorized` response.
@@ -221,7 +221,7 @@ Requests without a valid key will receive a `401 Unauthorized` response.
 curl http://localhost:11434/v1/chat/completions \
   -H "Authorization: Bearer your-generated-key-here" \
   -H "Content-Type: application/json" \
-  -d '{"model":"llama3.2","messages":[{"role":"user","content":"Hello!"}]}'
+  -d '{"model":"gpt-oss:20b","messages":[{"role":"user","content":"Hello!"}]}'
 ```
 
 > **Note:** The API key only secures HTTP API access. It does **not** affect the Ollama CLI running inside the container (e.g. `docker compose exec ollama ollama run ...`).
